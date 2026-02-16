@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three'
 import { useGLTF } from '@react-three/drei'
@@ -19,7 +19,7 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
   const { nodes } = useGLTF('/models/main/MainStudio.glb') as unknown as GLTFResult
 	const textures = useMainStudioTextures();
 	const mats = createMaterials(textures) as Record<keyof typeof studioTextures.main, THREE.MeshBasicMaterial>
-	const shirts = [
+	const shirts = useMemo(() => [
 		{
 			position: [0.65, 0.7, -0.45] as [number, number, number],
       rotation: [0, Math.PI / 9, 0] as [number, number, number],
@@ -44,16 +44,50 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
 			hovedMat: mats.grayStudio,
 			slug: 'gray',
 		},
-	]
+	], [nodes, mats])
 	const [envMaterial, setenvMaterial] = useState<THREE.MeshBasicMaterial>(mats.defaultStudio)
+	
+	const groupRef = useRef<THREE.Group>(null)
 	const meshRefs = useRef<(THREE.Mesh | null)[]>([])
 	const tlRefs = useRef<GSAPTimeline[]>([])
 	const router = useRouter()
+
 	useEffect(() => {
 		shirts.forEach((shirt) => {
 			router.prefetch(`/shirts/${shirt.slug}`)
 		} )
-	},[router])
+	},[router, shirts])
+
+	// initial animation for the whole group
+	useGSAP(() => {
+		const hasAnimationRun = sessionStorage.getItem("mainStudioAnimationRun")
+		if (!groupRef.current) return
+		gsap.from(groupRef.current.position, {
+			y: -0.15,
+			z: 2,
+			duration: 4,
+			ease: 'power4.inOut',
+			onComplete: () => {
+				sessionStorage.setItem("mainStudioAnimationRun", "true")
+			}
+		});
+		meshRefs.current.forEach((shirt, i) => {
+			if (!shirt) return
+			gsap.from(shirt.position, {
+				x: shirt.position.x * 2,
+				delay: 1,
+				duration: 3,
+				ease: 'power2.out',
+			});
+			gsap.from(shirt.rotation, {
+				y: shirt.rotation.y * 4,
+				delay: 1,
+				duration: 3,
+				ease: 'power2.out',
+			})
+		})
+	})
+
 	useGSAP(() => {
 		if (!meshRefs.current) return
 		meshRefs.current.forEach((mesh,i) => {
@@ -74,6 +108,7 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
 				)
 		})
 	})
+
 	useGSAP(() => {
 		if(window.innerWidth > 768) return 
 		for (let i = 0; i < meshRefs.current.length; i++){
@@ -121,7 +156,7 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
 	}
 
   return (
-    <group dispose={null} scale={scale}>
+    <group ref={groupRef} dispose={null} scale={scale}>
       <mesh
       castShadow
       receiveShadow
@@ -153,4 +188,4 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
   )
 }
 
-useGLTF.preload('/models/main/MainStudio.glb')
+

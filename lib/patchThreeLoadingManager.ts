@@ -1,19 +1,22 @@
-import * as THREE from 'three'
+import * as THREE from "three";
+
+type LoadingHandler = (...args: unknown[]) => void;
 
 export function patchThreeLoadingManager() {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  const manager: any = THREE.DefaultLoadingManager;
+  const manager = THREE.DefaultLoadingManager;
+
   const orig = {
-    onStart: manager.onStart,
-    onLoad: manager.onLoad,
-    onProgress: manager.onProgress,
-    onError: manager.onError,
-  }
+    onStart: manager.onStart as LoadingHandler | null,
+    onLoad: manager.onLoad as LoadingHandler | null,
+    onProgress: manager.onProgress as LoadingHandler | null,
+    onError: manager.onError as LoadingHandler | null,
+  };
 
-  const defer = 
-    (fn?: Function) =>
-    (...args: any[]) =>
+  const defer =
+    (fn?: LoadingHandler | null) =>
+    (...args: unknown[]) =>
       fn && setTimeout(() => fn(...args), 0);
 
   manager.onStart = defer(orig.onStart);

@@ -28,7 +28,7 @@ export const useShirtEnvCube = (shirtType: ShirtType) => {
             .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'])
         tex.colorSpace = THREE.SRGBColorSpace
         return tex
-    }, [shirtType])
+    }, [path])
     return env
 }
 

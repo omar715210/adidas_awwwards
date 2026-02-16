@@ -72,4 +72,3 @@ export function FirstWhiteModel() {
   )
 }
 
-useGLTF.preload('/models/white/WhiteStudio.glb')
