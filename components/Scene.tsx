@@ -5,10 +5,14 @@ import { FirstGrayModel } from './FirstGrayModel';
 import { FirstSportModel } from './FirstSportModel';
 import { SecondModel } from './SecondModel';
 import ThirdModel from './ThirdModel';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
 
 type Props = {
     shirtType?: ShirtType;
 }
+
+gsap.registerPlugin(ScrollTrigger)
 
 const Scene = ({ shirtType }: Props) => {
   return (
@@ -20,16 +24,16 @@ const Scene = ({ shirtType }: Props) => {
                 {shirtType === 'sport' && <FirstSportModel />}
             </View>
         </section>
-        <section id='second-section' className='h-screen'>
+        <section id='second-section' className='h-screen absolute inset-0 -z-10'>
             <View className='w-dvw h-dvh'>
                 {shirtType && <SecondModel shirtType={shirtType} />}
             </View>
         </section>
-        <section id='third-section' className='h-screen'>
+        {/* <section id='third-section' className='h-screen'>
             <View className='w-dvw h-dvh'>
                {shirtType && <ThirdModel shirtType={shirtType} />}
             </View>
-        </section>
+        </section> */}
     </main>
 )
 }
