@@ -14,7 +14,7 @@ const Header = () => {
         className={
           clsx(
             color, 
-            "w-40 h-16 mask-[url(/icons/footLocker.svg)] mask-no-repeat mask-center"
+            "w-40 h-16 mask-[url(/icons/footLocker.svg)] mask-no-repeat mask-center hover-animation"
           )
         }
         onClick={() => {

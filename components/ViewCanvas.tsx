@@ -1,9 +1,12 @@
 'use client';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber"
 import {  OrbitControls, View } from "@react-three/drei";
 import Rig from "./Rig";
+import LoadingSkeleton from "./LoadingSkeleton";
+import { patchThreeLoadingManager } from "@/lib/patchThreeLoadingManager";
 
+patchThreeLoadingManager();
 
 const ViewCanvas = () => {
   const [eventSource, setEventSource] = useState<HTMLElement | null >(null)
@@ -19,7 +22,10 @@ const ViewCanvas = () => {
     eventPrefix="client"
     gl={{stencil: true}}
   >
-    <View.Port/>
+
+    <Suspense fallback={<LoadingSkeleton/>}>
+      <View.Port/>
+    </Suspense>
     {/* <OrbitControls/> */}
     <Rig/>
   </Canvas>
