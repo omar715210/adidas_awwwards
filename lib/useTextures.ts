@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import { useTexture } from "@react-three/drei"
-import { SectionType, ShirtType, studioTextures } from "./textures"
+import { useCubeTexture, useTexture, useVideoTexture } from "@react-three/drei"
+import { environmentPaths, SectionType, ShirtType, studioTextures, videoTextures } from "./textures"
 
 export const useMainStudioTextures = () => {
     return useModifiedTextures(studioTextures.main, true)
@@ -13,6 +13,20 @@ export const useShirtSectionTextures = (
 ) => {
     const paths = studioTextures.shirts[shirtType][section]
     return useModifiedTextures(paths, setModifier);
+}
+
+export const useShirtEnvCube = (shirtType: ShirtType) => {
+    const path = environmentPaths[shirtType]
+    return useCubeTexture(
+        ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'],
+        { path }
+      )
+}
+
+export const useShirtVideoTexture = (shirtType: ShirtType) => {
+    const path = videoTextures[shirtType]
+    return useVideoTexture(path)
+    
 }
 
 function useModifiedTextures(

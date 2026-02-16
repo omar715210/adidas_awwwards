@@ -64,6 +64,18 @@ export const studioTextures = {
   },
 }
 
+export const environmentPaths = {
+  sport: "/textures/sport/third/",
+  white: "/textures/white/third/",
+  gray: "/textures/gray/third/",
+}
+
+export const videoTextures = {
+  sport: "/textures/sport/third/adidas.mp4",
+  white: "/textures/white/third/adidas.mp4",
+  gray: "/textures/gray/third/adidas.mp4",
+}
+
 export type ShirtType = keyof typeof studioTextures.shirts;
 export type SectionType = 'first' | 'second' | 'third';
 
