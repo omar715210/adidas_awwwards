@@ -61,7 +61,7 @@ export function MainStudioModel( {currentIndex, scale}: { currentIndex: number, 
 	// initial animation for the whole group
 	useGSAP(() => {
 		const hasAnimationRun = sessionStorage.getItem("mainStudioAnimationRun")
-		if (!groupRef.current) return
+		if (!groupRef.current || hasAnimationRun) return
 		gsap.from(groupRef.current.position, {
 			y: -0.15,
 			z: 2,

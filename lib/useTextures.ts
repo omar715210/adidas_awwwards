@@ -18,10 +18,6 @@ export const useShirtSectionTextures = (
 
 export const useShirtEnvCube = (shirtType: ShirtType) => {
     const path = environmentPaths[shirtType]
-    // return useCubeTexture(
-    //     ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'],
-    //     { path }
-    //   )
     const env = useMemo(() => {
         const tex = new THREE.CubeTextureLoader()
             .setPath(path)

@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react'
+import { RefObject, useRef } from 'react'
 import * as THREE from 'three'
 import { useGLTF, useMask } from '@react-three/drei'
 import { ShirtType, TextureKey } from '@/lib/textures'
@@ -8,8 +8,6 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap'
 import { shirtColors } from '@/lib/colors';
 import { useMediaQuery } from 'react-responsive';
-import { group } from 'console';
-import { text } from 'stream/consumers';
 
 type GLTFResult = {
   nodes: {
